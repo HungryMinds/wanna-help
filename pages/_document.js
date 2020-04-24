@@ -1,8 +1,8 @@
 /* eslint react/no-danger: 0 */
-import React from 'react'
-import PropTypes from 'prop-types'
-import { get } from 'lodash/object'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import React from "react";
+import PropTypes from "prop-types";
+import { get } from "lodash/object";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class CustomDocument extends Document {
   render() {
@@ -11,7 +11,7 @@ class CustomDocument extends Document {
     // https://github.com/zeit/next.js/issues/3043#issuecomment-334521241
     // https://github.com/zeit/next.js/issues/2252#issuecomment-353992669
     // Alternatively, you could use a store, like Redux.
-    const { AuthUserInfo } = this.props
+    const { AuthUserInfo } = this.props;
     return (
       <Html>
         <Head>
@@ -22,24 +22,32 @@ class CustomDocument extends Document {
               __html: JSON.stringify(AuthUserInfo, null, 2),
             }}
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,300;0,400;0,600;0,800;0,900;1,400;1,600&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-CustomDocument.getInitialProps = async ctx => {
+CustomDocument.getInitialProps = async (ctx) => {
   // Get the AuthUserInfo object. This is set if the server-rendered page
   // is wrapped in the `withAuthUser` higher-order component.
-  const AuthUserInfo = get(ctx, 'myCustomData.AuthUserInfo', null)
+  const AuthUserInfo = get(ctx, "myCustomData.AuthUserInfo", null);
 
-  const initialProps = await Document.getInitialProps(ctx)
-  return { ...initialProps, AuthUserInfo }
-}
+  const initialProps = await Document.getInitialProps(ctx);
+  return { ...initialProps, AuthUserInfo };
+};
 
 CustomDocument.propTypes = {
   AuthUserInfo: PropTypes.shape({
@@ -50,6 +58,6 @@ CustomDocument.propTypes = {
     }),
     token: PropTypes.string,
   }).isRequired,
-}
+};
 
-export default CustomDocument
+export default CustomDocument;

@@ -1,24 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { get } from 'lodash/object'
-import Link from 'next/link'
-import Router from 'next/router'
-import withAuthUser from '../utils/pageWrappers/withAuthUser'
-import withAuthUserInfo from '../utils/pageWrappers/withAuthUserInfo'
-import logout from '../utils/auth/logout'
+import React from "react";
+import PropTypes from "prop-types";
+import { get } from "lodash/object";
+import Link from "next/link";
+import Router from "next/router";
+import withAuthUser from "../utils/pageWrappers/withAuthUser";
+import withAuthUserInfo from "../utils/pageWrappers/withAuthUserInfo";
+import logout from "../utils/auth/logout";
 
-const Index = props => {
-  const { AuthUserInfo, data } = props
-  const AuthUser = get(AuthUserInfo, 'AuthUser', null)
-  const { favoriteFood } = data
+const Index = (props) => {
+  const { AuthUserInfo, data } = props;
+  const AuthUser = get(AuthUserInfo, "AuthUser", null);
+  const { favoriteFood } = data;
 
   return (
     <div>
       <p>Hi there!</p>
       {!AuthUser ? (
         <p>
-          You are not signed in.{' '}
-          <Link href={'/auth'}>
+          You are not signed in.{" "}
+          <Link href={"/auth"}>
             <a>Sign in</a>
           </Link>
         </p>
@@ -27,17 +27,17 @@ const Index = props => {
           <p>You're signed in. Email: {AuthUser.email}</p>
           <p
             style={{
-              display: 'inlinelock',
-              color: 'blue',
-              textDecoration: 'underline',
-              cursor: 'pointer',
+              display: "inlinelock",
+              color: "blue",
+              textDecoration: "underline",
+              cursor: "pointer",
             }}
             onClick={async () => {
               try {
-                await logout()
-                Router.push('/auth')
+                await logout();
+                Router.push("/auth");
               } catch (e) {
-                console.error(e)
+                console.error(e);
               }
             }}
           >
@@ -46,45 +46,66 @@ const Index = props => {
         </div>
       )}
       <div>
-        <Link href={'/example'}>
+        <Link href={"/example"}>
           <a>Another example page</a>
         </Link>
       </div>
       <div>
         <div>Your favorite food is {favoriteFood}.</div>
       </div>
+      <div className="max-w-sm rounded overflow-hidden shadow-lg">
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+          <p className="text-gray-700 text-base">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Voluptatibus quia, nulla! Maiores et perferendis eaque,
+            exercitationem praesentium nihil.
+          </p>
+        </div>
+        <div className="px-6 py-4">
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+            #photography
+          </span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+            #travel
+          </span>
+          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+            #winter
+          </span>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 // Just an example.
-const mockFetchData = async userId => ({
+const mockFetchData = async (userId) => ({
   user: {
     ...(userId && {
       id: userId,
     }),
   },
-  favoriteFood: 'pizza',
-})
+  favoriteFood: "pizza",
+});
 
-Index.getInitialProps = async ctx => {
+Index.getInitialProps = async (ctx) => {
   // Get the AuthUserInfo object. This is set in `withAuthUser.js`.
   // The AuthUserInfo object is available on both the server and client.
-  const AuthUserInfo = get(ctx, 'myCustomData.AuthUserInfo', null)
-  const AuthUser = get(AuthUserInfo, 'AuthUser', null)
+  const AuthUserInfo = get(ctx, "myCustomData.AuthUserInfo", null);
+  const AuthUser = get(AuthUserInfo, "AuthUser", null);
 
   // You can also get the token (e.g., to authorize a request when fetching data)
   // const AuthUserToken = get(AuthUserInfo, 'token', null)
 
   // You can fetch data here.
-  const data = await mockFetchData(get(AuthUser, 'id'))
+  const data = await mockFetchData(get(AuthUser, "id"));
 
   return {
     data,
-  }
-}
+  };
+};
 
-Index.displayName = 'Index'
+Index.displayName = "Index";
 
 Index.propTypes = {
   AuthUserInfo: PropTypes.shape({
@@ -101,14 +122,14 @@ Index.propTypes = {
     }).isRequired,
     favoriteFood: PropTypes.string.isRequired,
   }).isRequired,
-}
+};
 
 Index.defaultProps = {
   AuthUserInfo: null,
-}
+};
 
 // Use `withAuthUser` to get the authed user server-side, which
 // disables static rendering.
 // Use `withAuthUserInfo` to include the authed user as a prop
 // to your component.
-export default withAuthUser(withAuthUserInfo(Index))
+export default withAuthUser(withAuthUserInfo(Index));
