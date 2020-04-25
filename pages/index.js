@@ -14,6 +14,36 @@ const Index = (props) => {
 
   return (
     <>
+      {!AuthUser ? (
+        <p>
+          You are not signed in.{" "}
+          <Link href={"/auth"}>
+            <a>Sign in</a>
+          </Link>
+        </p>
+      ) : (
+        <div>
+          <p>You're signed in. Email: {AuthUser.email}</p>
+          <p
+            style={{
+              display: "inlinelock",
+              color: "blue",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+            onClick={async () => {
+              try {
+                await logout();
+                Router.push("/auth");
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+          >
+            Log out
+          </p>
+        </div>
+      )}
       <header className="h-half w-full bg-gray-100 flex justify-center items-center flex-col">
         <div className=" w-40 flex justify-center items-center flex-col text-center">
           <h1 className="text-6xl mb-4">Getting ready to design</h1>
@@ -54,37 +84,6 @@ const Index = (props) => {
         </div>
       </header>
       <div>
-        {!AuthUser ? (
-          <p>
-            You are not signed in.{" "}
-            <Link href={"/auth"}>
-              <a>Sign in</a>
-            </Link>
-          </p>
-        ) : (
-          <div>
-            <p>You're signed in. Email: {AuthUser.email}</p>
-            <p
-              style={{
-                display: "inlinelock",
-                color: "blue",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-              onClick={async () => {
-                try {
-                  await logout();
-                  Router.push("/auth");
-                } catch (e) {
-                  console.error(e);
-                }
-              }}
-            >
-              Log out
-            </p>
-          </div>
-        )}
-
         <div className="px-2">
           <div className="py-12">
             <h3 className="text-center text-4xl text-black font-medium leading-snug tracking-wider">
