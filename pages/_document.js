@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { get } from "lodash/object";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
+import Nav from "../components/Nav";
+import Footer from "../components/Footer";
+
 class CustomDocument extends Document {
   render() {
     // Store initial props from request data that we need to use again on
@@ -32,8 +35,10 @@ class CustomDocument extends Document {
           />
         </Head>
         <body>
+          <Nav />
           <Main />
           <NextScript />
+          <Footer />
         </body>
       </Html>
     );
